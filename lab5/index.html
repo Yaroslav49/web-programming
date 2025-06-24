@@ -1,0 +1,91 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Массивы</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="js.ico" type="image/x-icon">
+    <script src="main.js"></script>
+</head>
+
+<body>
+    <header>
+        <h3>WEB-программирование</h3>
+        <h3>Работа с массивами</h3>
+        <h3>Лабораторная работа №5</h3>
+    </header>
+
+    <main>
+        <div class="vertical-list frame">
+            <h4>Задание</h4>
+            <span>Составить функцию вставки элемента Е после каждого элемента вектора, превышающего некоторое значение Р. 
+                Используя данную функцию обработать все строки матриц M1 и М2.
+                Определить, на сколько данные матрицы увеличились, уменьшились или остались прежнего размера.</span>
+            <span>После найти количество элементов Е с хотя бы одним чётным индексом в матрицах М1 и М2.</span>
+            <span>После этого отсортировать каждую чётную строку каждой матрицы по возрастанию, нечетную – по убыванию.</span>
+        </div>
+    
+        <form class="vertical-list frame" id="main-form">
+            <h4>Параметры</h4>
+            <div class="horizontal-list">
+                Матрица М1 размером
+                <input type="number" id="n" min="1" max="50" value="5"> строк и 
+                <input type="number" id="m" min="1" max="50" value="5"> столбцов
+            </div>
+
+            <div class="horizontal-list">
+                Матрица М2 размером
+                <input type="number" id="n2" min="1" max="50" value="5"> строк и 
+                <input type="number" id="m2" min="1" max="50" value="5"> столбцов
+            </div>
+    
+            <div class="horizontal-list">
+                Значения матриц от
+                <input type="number" id="start" min="-100" max="100" value="-5" step="0.1"> до 
+                <input type="number" id="end" min="-100" max="100" value="5" step="0.1">
+            </div>
+    
+            <div class="horizontal-list">
+                Элемент E для вставки
+                <input type="number" id="E" min="-100" max="100" value="1" step="0.1">
+            </div>
+    
+            <div class="horizontal-list">
+                Значение P для сравнения
+                <input type="number" id="P" min="-100" max="100" value="0" step="0.1">
+            </div>
+            
+            <input type="button" id="button-start" value="Решить" onclick="mainSolve()" class="button">
+        </form>
+    
+        <div class="vertical-list frame no-display" id="result-frame">
+            <h4>Результат</h4>
+    
+            <div class="horizontal-list big-gap no-display" id="matrixs">
+                <div id="matrix1"></div>
+                <div id="matrix2"></div>
+            </div>
+    
+            <div class="horizontal-list big-gap no-display" id="insert-matrixs">
+                <div id="insert-matrix1"></div>
+                <div id="insert-matrix2"></div>
+            </div>
+    
+            <div class="horizontal-list big-gap no-display" id="sort-matrixs">
+                <div id="sort-matrix1"></div>
+                <div id="sort-matrix2"></div>
+            </div>
+    
+            <span class="error no-display" id="error"></span>
+        </div>
+    </main>
+
+    <footer>
+        <p>Выполнил студент группы 2413, Зверев Ярослав</p>
+        <p>Рязань, 2025</p>
+    </footer>
+
+
+</body>
+
+</html>

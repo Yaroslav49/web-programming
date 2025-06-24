@@ -1,0 +1,168 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Классы</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="js.ico" type="image/x-icon">
+    <script src="main.js"></script>
+</head>
+
+<body onload="onLoadPage()">
+    <header>
+        <h3>WEB-программирование</h3>
+        <h3>Классы в JavaScript</h3>     
+        <h3>Лабораторная работа №8</h3>
+    </header>
+
+    <main>
+        <div class="vertical-list frame">
+            <h4>Задание</h4>
+            <p>Разработать класс объектов по вариантам задания (через прототипы, без использования class-определения). Каждый класс из вариантов должен иметь переопределенный метод toString() для
+                вывода состояния объекта в консоль, а также наследоваться от родительского класса BaseObject,
+                который должен иметь методы:</p>
+            <ul>
+                <li>
+                    регистрации факта, времени и аргументов вызова методов дочерних классов (т.е.
+                    дочерний класс должен регистрировать эту информацию при вызове своих методов в
+                    своём родительском классе);
+                </li>
+                <li>
+                    очистку списка регистрации действий;
+                </li>
+                <li>
+                    вывод списка зарегистрированных действий в консоль.
+                </li>
+            </ul>          
+            <p>Интерфейс программы должен содержать возможность создавать объекты класса и выполнять с
+                ними все возможные действия, с выводом результатов на экран.</p>
+            <p><b>Множество целых чисел – Set.</b>
+                Разработать класс множества целых чисел мощности n.
+                Реализовать методы для определения принадлежности заданного элемента множеству,
+                добавление\удаление элемента, пересечения, объединения, разности двух множеств.
+            </p>
+        </div>
+    
+        <form class="vertical-list frame">
+            <h4>Создание множества</h4>
+
+            <label for="set">Введите элементы множества через пробел (для пустого множества оставьте поле пустым)</label>
+            <textarea id="set" name="set" class="input-text" rows="4"></textarea>
+            
+            <div class="horizontal-list">
+                <input type="button" value="Создать" onclick="createSet()" class="button">
+                <input type="button" value="Очистить поле" onclick="form.set.value=''" class="light-button">
+                <input type="button" value="Очистить список множеств" onclick="deleteSets()" class="light-button">
+            </div>      
+
+            <span id="error-creating" class="error"></span>
+            <div id="sets"></div>
+
+        </form>
+
+        <div class="vertical-list frame" id="operations1-frame">
+            <h4>Операции по работе с множеством</h4>
+
+            <div class="horizontal-center-list">
+                <label for="select-1">Выберите множество</label>
+                <select id="select-1" name="select-1"></select>
+            </div>
+            
+            <div class="horizontal-list">
+                <div class="vertical-list">
+                    <label for="include-elem">Принадлежит ли множеству элемент</label>
+                    <input type="number" id="include-elem" name="include-elem" class="input-text"/>
+                    <input type="button" value="Проверить" onclick="checkInclude()" class="button">
+
+                    <span id="error-include" class="error"></span>
+                    <span id="result-include"></span>
+                </div>
+
+                <div class="vertical-line"></div>
+
+                <div class="vertical-list">
+                    <label for="add-elem">Добавление элемента во множество</label>
+                    <input type="number" id="add-elem" name="add-elem" class="input-text"/>
+                    <input type="button" value="Добавить" onclick="addElemInSet()" class="button">
+
+                    <span id="error-add" class="error"></span>
+                    <span id="result-add"></span>
+                </div>
+
+                <div class="vertical-line"></div>
+
+                <div class="vertical-list">
+                    <label for="remove-elem">Удаление элемента из множества</label>
+                    <input type="number" id="remove-elem" name="remove-elem" class="input-text"/>
+                    <input type="button" value="Удалить" onclick="removeElemFromSet()" class="button">
+
+                    <span id="error-remove" class="error"></span>
+                    <span id="result-remove"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="vertical-list frame" id="operations2-frame">
+            <h4>Операции по работе с двумя множествами</h4>
+            
+            <div class="horizontal-center-list big-gap">                
+                <label for="select-2-1">Выберите первое множество</label>
+                <select id="select-2-1" name="select-2-1"></select>
+ 
+                <label for="select-2-2">Выберите второе множество</label>
+                <select id="select-2-2" name="select-2-2"></select>                
+            </div>         
+            
+            <div class="horizontal-list">
+                <div class="vertical-list">
+                    <label>Пересечение множеств</label>
+                    <input type="button" value="Выполнить" onclick="intersectionTwoSets()" class="button">
+                    <span id="result-intersection" class="multi-line"></span>
+                </div>
+
+                <div class="vertical-line"></div>
+
+                <div class="vertical-list">
+                    <label>Объединение множеств</label>
+                    <input type="button" value="Выполнить" onclick="unionTwoSets()" class="button">
+                    <span id="result-union" class="multi-line"></span>
+                </div>
+
+                <div class="vertical-line"></div>
+
+                <div class="vertical-list">
+                    <label>Разность множеств</label>
+                    <input type="button" value="Выполнить" onclick="differenceTwoSets()" class="button">
+                    <span id="result-difference" class="multi-line"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="vertical-list frame" id="log-frame">
+            <h4>Список зарегистрированных действий</h4>
+
+            <div class="horizontal-center-list">
+                <label for="select-3">Выберите множество</label>
+                <select id="select-3" name="select-3"></select>
+            </div>
+            
+
+            <div class="horizontal-list">
+                <button class="button" onclick="printLog()">Вывести в консоль</button>
+                <button class="light-button" onclick="clearLog()">Очистить список</button>
+            </div>
+
+            <div id="log-out"></div>
+        </div>
+
+    </main>
+
+    <footer>
+        <p class="paragraph">Выполнил студент группы 2413, Зверев Ярослав</p>
+        <p class="paragraph">Рязань, 2025</p>
+    </footer>
+
+
+</body>
+
+</html>

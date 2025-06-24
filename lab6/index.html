@@ -1,0 +1,148 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Объекты</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="js.ico" type="image/x-icon">
+    <script src="main.js"></script>
+</head>
+
+<body onload="onLoadPage()">
+    <header>
+        <h3>WEB-программирование</h3>
+        <h3>Работа с массивами объектов</h3>
+        <h3>Лабораторная работа №6</h3>
+    </header>
+
+    <main>
+        <div class="vertical-list frame">
+            <h4>Задание</h4>
+            <span>Создать программу, для выполнения задачи по вариантам ниже. При формировании массивов
+                предусмотреть возможность задавать размеры массива и переменных, необходимых по заданию,
+                значения свойств объектов задавать случайным образом. Предусмотреть вывод на экран всех
+                промежуточных результатов работы, а также возможность сериализации массива объектов и
+                загрузки массива в формате JSON.</span>               
+            <span>Описать массив объектов и поместить в него сгенерированные сведения о N работниках.
+                Предусмотреть такие сведения как ФИО работника (отдельным объектом), дата
+                рождения (отдельный объект), номер цеха, трудовая информация (отдельный объект со
+                сведениями о должности, разряде, стаже). </span>
+            <span>Написать функцию выдачи списка работников по должности, разряду или диапазону стажа.</span>
+            <span>Написать функцию удаления сведений о дате рождения, если стаж менее заданного числа.</span>
+            <span>Написать функцию добавления информации о возрасте работника, найденного по году рождения.</span>
+        </div>
+    
+        <form class="vertical-list frame" id="main-form">
+            <h4>Создание массива работников</h4>
+
+            <div class="horizontal-list tab-list">
+                <div class="tab-button active" onclick="showTab(this, 'tab-generate-array')">Генерация массива</div>
+                <div class="tab-button" onclick="showTab(this, 'tab-load-array')">Загрузка из JSON</div>
+            </div>
+
+            <div id="tab-generate-array" class="tab vertical-list">
+                <div class="horizontal-list">
+                    Размер массива:
+                    <input type="number" id="n" min="1" max="50" value="5" class="input-text">
+                </div>
+                <input type="button" id="button-generate" value="Сгенерировать массив" onclick="generateArray()" class="button">
+                <span id="error-generating" class="error"></span>
+                <div id="result-creating-array" class="vertical-list">
+                    <div id="original-array"></div>
+                    <input type="button" id="button-serialize" value="Сериализовать" onclick="serializeArray()" class="light-button">
+                    <textarea id="json-out" rows="30" readonly></textarea>
+                </div>
+            </div>
+
+            <div id="tab-load-array" class="tab vertical-list">
+                <label>Вставьте JSON массива объектов</label>
+                <textarea id="json-in" rows="30"></textarea>
+                <input type="button" id="button-load" value="Создать массив" onclick="loadArrayFromJSON()" class="button">
+                <span id="error-loading" class="error"></span>
+                <div id="result-creating-array-from-json"></div>
+            </div>    
+
+        </form>
+
+        <form class="vertical-list frame" id="find-form">
+            <h4>Поиск работников</h4>
+
+            <div class="horizontal-list tab-list">
+                <div class="tab-button active" onclick="showTab(this, 'tab-find-by-post')">По должности</div>
+                <div class="tab-button" onclick="showTab(this, 'tab-find-by-category')">По разряду</div>
+                <div class="tab-button" onclick="showTab(this, 'tab-find-by-experience')">По стажу</div>
+            </div>
+
+            <div id="tab-find-by-post" class="tab vertical-list">
+                <div class="horizontal-list">
+                    Введите должность:
+                    <input type="text" id="post" class="input-text">
+                </div>
+                <input type="button" value="Найти" onclick="findWorkersByPost()" class="button">
+                <div id="search-by-post-array"></div>
+            </div>
+
+            <div id="tab-find-by-category" class="tab vertical-list">
+                <div class="horizontal-list">
+                    Выберите разряд
+                    <select id="category" name="category" class="input-text">
+                        <option value="1" selected>Первый</option>
+                        <option value="2">Второй</option>
+                        <option value="3">Третий</option>
+                        <option value="4">Четвёртый</option>
+                        <option value="5">Пятый</option>
+                        <option value="6">Шестой</option>
+                        <option value="7">Седьмой</option>
+                        <option value="8">Восьмой</option>
+                    </select>
+                </div>
+                <input type="button" value="Найти" onclick="findWorkersByCategory()" class="button">
+                <div id="search-by-category-array"></div>
+            </div>
+
+            <div id="tab-find-by-experience" class="tab vertical-list">
+                <div class="horizontal-list">
+                    Стаж между
+                    <input type="number" id="start-experience" class="input-text" min="0" max="60"> и
+                    <input type="number" id="end-experience" class="input-text" min="0" max="60"> лет
+                </div>
+                <input type="button" value="Найти" onclick="findWorkersByExperience()" class="button">
+                <div id="search-by-experience-array"></div>
+            </div>
+        </form>
+
+        <form class="vertical-list frame" id="delete-form">
+            <h4>Удаление сведений о дате рождения</h4>
+
+            <div class="horizontal-list">
+                Если стаж меньше
+                <input type="number" id="min-experience" class="input-text" min="0" max="60">
+            </div>
+            <input type="button" value="Удалить" onclick="deleteWorkersDateBirth()" class="button">
+            <div id="deleting-array"></div>
+
+        </form>
+
+        <form class="vertical-list frame" id="add-form">
+            <h4>Добавление информации о возрасте сотрудника</h4>
+
+            <div class="horizontal-list">
+                Введите год рождения сотрудников, которым нужно добавить информацию о возрасте
+                <input type="number" id="year" class="input-text" min="1900" max="2007">
+            </div>
+            <input type="button" value="Добавить" onclick="addWorkersAge()" class="button">
+            <div id="editting-array"></div>
+
+        </form>
+
+    </main>
+
+    <footer>
+        <p>Выполнил студент группы 2413, Зверев Ярослав</p>
+        <p>Рязань, 2025</p>
+    </footer>
+
+
+</body>
+
+</html>

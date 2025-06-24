@@ -1,0 +1,180 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Функции</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="js.ico" type="image/x-icon">
+    <script src="main.js"></script>
+</head>
+
+<body onload="onLoadPage()">
+    <header>
+        <h3>WEB-программирование</h3>
+        <h3>Функции в JavaScript</h3>
+        <h3>Лабораторная работа №7</h3>
+    </header>
+
+    <main>
+        <div class="vertical-list frame">
+            <h4>Задание</h4>
+            <p>Составить функцию определения характеристик функции y = f(x) по вариантам задания, где каждая характеристика рассчитывается отдельной функцией 
+                и передаётся в функцию расчёта характеристик в виде массива, а рассчитанные характеристики возвращаются из функции также в виде массива. 
+                Функция задана в дискретных точках отрезка [a, b] с постоянным шагом h. 
+                Используя ее, найти характеристики заданных ниже функций f1, f2 и f3. 
+                Для заданных функций предусмотреть создание вариантов функций (через функции высшего порядка) для:</p>
+            <ul>
+                <li>
+                    мемоизации значений в замыкании и возможность получения только предрасчитанного значения и 
+                    количества предрасчитанных значений через собственные методы функции;
+                </li>
+                <li>
+                    вывод в консоль отладочной информации: время вызова, аргумент, значение функции;
+                </li>
+                <li>
+                   сохранение количества вызовов функции в замыкании, получение и обнуление этого значения через собственные методы функции. 
+                </li>
+            </ul>          
+            <p>Интерфейс программы должен предоставлять возможность выбрать диапазон и шаг определения функции, 
+                выбрать вид функции (f1, f2 или f3), 
+                выбрать сочетание рассчитываемых характеристик, 
+                а также сочетание вариантов функции (мемоизированная, отладочная, сохранение кол-ва вызовов).</p>
+            <img src="equation.png">
+            <p><b>Характеристики:</b> минимум, кол-во положительных значений, является ли монотонно-возрастающей.</p>
+            <table>
+                <caption>ОДЗ функций:</caption>
+                <tbody>
+                    <tr>
+                        <th>f1(x)</th>
+                        <th>f2(x)</th>
+                        <th>f3(x)</th>
+                    </tr>
+                    <tr>
+                        <td>x > 0</td>
+                        <td>x > 5</td>
+                        <td>x ≠ 0</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    
+        <form class="vertical-list frame" id="main-form">
+            <h4>Задание параметров</h4>
+
+            <div class="horizontal-list">
+                <label>Тип функции</label>
+                <select id="type-function">
+                    <option value="0" selected>f1(x)</option>
+                    <option value="1">f2(x)</option>
+                    <option value="2">f3(x)</option>
+                </select>
+            </div>
+
+            <div class="horizontal-list">
+                <label>Функция задана на отрезке от</label>
+                <input type="number" id="a" min="-50" max="50" value="1" step="0.1" class="input-text"> до
+                <input type="number" id="b" min="-50" max="50" value="5" step="0.1" class="input-text"> с шагом
+                <input type="number" id="h" min="0" max="50" value="0.1" step="0.1" class="input-text">
+            </div>
+
+            <fieldset class="vertical-list">
+                <legend>Состав характеристик для расчёта</legend> 
+                <div>
+                    <input type="checkbox" id="minimum" name="minimum" checked />
+                    <label for="minimum">Минимум</label>
+                </div>               
+                <div>
+                    <input type="checkbox" id="count-positive-values" name="count-positive-values" checked />
+                    <label for="count-positive-values">Кол-во положительных значений</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="mono-increasing" name="mono-increasing" checked />
+                    <label for="mono-increasing">Является ли монотонно-возрастающей</label>
+                </div>
+            </fieldset>
+
+            <fieldset class="vertical-list">
+                <legend>Состав вариантов функций</legend> 
+                <div>
+                    <input type="checkbox" id="memo" name="memo" checked />
+                    <label for="memo">Мемоизация</label>
+                </div>               
+                <div>
+                    <input type="checkbox" id="debug" name="debug" checked />
+                    <label for="debug">Отладочная</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="count-calls" name="count-calls" checked />
+                    <label for="count-calls">Сохранение кол-ва вызовов</label>
+                </div>
+            </fieldset>
+            
+            <input type="button" id="button-run" value="Подсчитать характеристики" onclick="mainSolve()" class="button">
+
+            <span id="error" class="error"></span>
+
+        </form>
+
+        <div id="result-frame" class="vertical-list frame">
+            <h4>Результат</h4>
+            <div class="horizontal-list" id="minimum-out-group">
+                <label for="minimum-out">Минимум: </label>
+                <input type="number" id="minimum-out" name="minimum-out" class="input-text" readonly/>
+            </div>
+            <div class="horizontal-list" id="count-positive-values-out-group">
+                <label for="count-positive-values-out">Кол-во положительных значений: </label>
+                <input type="number" id="count-positive-values-out" name="count-positive-values-out" class="input-text" readonly/>
+            </div>
+            <div class="horizontal-list" id="mono-increasing-out"></div>
+        </div>
+
+        <div id="memo-frame" class="vertical-list frame">
+            <h4>Мемоизация значений</h4>
+
+            <div class="horizontal-list">
+                <label for="length-cache-out">Кол-во предрасчитанных значений:</label>
+                <input type="number" id="length-cache-out" name="length-cache-out" class="input-text" readonly/>
+            </div>
+
+            <div class="horizontal-list">
+                <label for="x-cache">Получение предрасчитанного значения для x = </label>
+                <input type="number" id="x-cache" name="x-cache" min="-50" max="50" value="1" step="0.1" class="input-text"/>
+            </div>
+
+            <input type="button" id="button-get-cache" value="Посчитать" onclick="calculateCacheValue()" class="button">
+            <span id="memo-error" class="error"></span>
+
+            <div class="horizontal-list" id="cache-out-group">
+                <label for="cache-out">Предрасчитанное значение: </label>
+                <input type="text" id="cache-out" name="cache-out" class="input-text" readonly/>
+            </div>
+        </div>
+
+        <div id="count-calls-frame" class="vertical-list frame">
+            <h4>Сохранение кол-ва вызовов</h4>
+
+            <div class="horizontal-list">
+                <label for="count-calls-out">Кол-во вызовов функции:</label>
+                <input type="number" id="count-calls-out" name="count-calls-out" class="input-text" readonly/>
+            </div>
+
+            <input type="button" id="button-get-cache" value="Обнулить кол-во вызовов" onclick="resetCountCalls()" class="button">
+        </div>
+
+        <div id="debug-frame" class="vertical-list frame">
+            <h4>Отладочная информация</h4>
+
+            <div id="debug-out"></div>
+        </div>
+
+    </main>
+
+    <footer>
+        <p class="paragraph">Выполнил студент группы 2413, Зверев Ярослав</p>
+        <p class="paragraph">Рязань, 2025</p>
+    </footer>
+
+
+</body>
+
+</html>
